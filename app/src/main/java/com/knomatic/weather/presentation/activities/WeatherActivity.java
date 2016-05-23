@@ -197,6 +197,8 @@ public class WeatherActivity extends AppCompatActivity implements
         this.currentFragment = fragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.slide_left_enter, R.anim.slide_left_exit,
+                        R.anim.slide_right_enter, R.anim.slide_right_exit)
                 .replace(R.id.nv_frame_layout, fragment)
                 .addToBackStack(null)
                 .commit();

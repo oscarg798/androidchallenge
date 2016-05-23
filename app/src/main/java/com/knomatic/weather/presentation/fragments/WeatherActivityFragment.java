@@ -9,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.knomatic.weather.R;
 import com.knomatic.weather.model.dtos.ForecastDTO;
+import com.knomatic.weather.model.utils.AsyncTaskExecutor;
 import com.knomatic.weather.model.utils.ForecastUtils;
+import com.knomatic.weather.model.utils.interfaces.IAsyncTaskExecutor;
 import com.knomatic.weather.presentation.activities.WeatherActivity;
 import com.knomatic.weather.presentation.adapters.DailyForecastAdapter;
 import com.knomatic.weather.presentation.utils.SimpleDividerItemDecoration;
@@ -26,7 +29,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class WeatherActivityFragment extends Fragment {
+public class WeatherActivityFragment extends Fragment implements IAsyncTaskExecutor {
 
     private static final String PARAM_KEY = "forecast";
 
@@ -43,6 +46,10 @@ public class WeatherActivityFragment extends Fragment {
     private TextView tvWindSpeed;
 
     private RecyclerView recyclerView;
+
+    private DailyForecastAdapter dailyForecastAdapter;
+
+    private ProgressBar pbDailyForecast;
 
     public static WeatherActivityFragment getInstance(List<CoupleParams> coupleParamsList) {
         WeatherActivityFragment weatherActivityFragment = new WeatherActivityFragment();
@@ -82,8 +89,7 @@ public class WeatherActivityFragment extends Fragment {
         tvWindSpeed = (TextView) view.findViewById(R.id.tv_wind_speed);
         ivWeather = (ImageView) view.findViewById(R.id.iv_weather);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 1);
-        recyclerView.setLayoutManager(mLayoutManager);
+        pbDailyForecast = (ProgressBar) view.findViewById(R.id.pb_daily_forecast);
     }
 
     private void initComponents() {
@@ -96,30 +102,73 @@ public class WeatherActivityFragment extends Fragment {
         tvWindSpeed.setText(String.format("%.2f KM", ForecastUtils
                 .passWindSpeedToKM(forecastDTO.getWindSpeed())));
 
-        String cityName = ForecastUtils.getCityName(((WeatherActivity) getActivity())
-                .getWeatherActivityController().getLocation(), getActivity().getApplicationContext());
-
-        if (cityName != null) {
-            tvCityName.setText(cityName);
-        } else {
-            tvCityName.setText(coupleParamsList.get(5).getParam());
-        }
-
         int weatherIcon = ForecastUtils.getWeatherIcon(forecastDTO.getIcon());
 
         ivWeather.setImageDrawable(getActivity()
                 .getApplicationContext().getResources().getDrawable(weatherIcon));
+        /**
+         * Create the forecast for eachday maybe takes a while so
+         * an async task is need it, for run the process on background
+         */
+        AsyncTaskExecutor asyncTaskExecutor = new AsyncTaskExecutor(this);
+        asyncTaskExecutor.execute();
 
-        DailyForecastAdapter dailyForecastAdapter = new DailyForecastAdapter((List<ForecastDTO>) coupleParamsList.get(1).getObject(),
-                getActivity().getApplicationContext());
 
-        recyclerView.setAdapter(dailyForecastAdapter);
-
-        recyclerView.setHasFixedSize(true);
-
-        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()
-                .getApplicationContext()));
     }
 
 
+    @Override
+    public Object execute() {
+
+        /**
+         * Check the city name from lat, lng
+         */
+        String cityName = ForecastUtils.getCityName(((WeatherActivity) getActivity())
+                .getWeatherActivityController().getLocation(), getActivity().getApplicationContext());
+
+        /**
+         * If we can not get the city name from a lat lng point
+         * we user the returned value from forecast api
+         */
+        if (cityName == null) {
+            cityName = coupleParamsList.get(5).getParam();
+        }
+
+        /**
+         * create the recycler view adapter
+         */
+        dailyForecastAdapter =
+                new DailyForecastAdapter((List<ForecastDTO>) coupleParamsList.get(1).getObject(),
+                        getActivity().getApplicationContext());
+
+        /**
+         * We return the adapter
+         */
+        return cityName;
+    }
+
+    @Override
+    public void onExecuteComplete(Object object) {
+        /**
+         * We check if we got a String
+         */
+        if (object != null && object instanceof String) {
+            String cityName = (String) object;
+            tvCityName.setText(cityName);
+        }
+
+        recyclerView.setAdapter(dailyForecastAdapter);
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()
+                .getApplicationContext()));
+
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 1);
+        recyclerView.setLayoutManager(mLayoutManager);
+        pbDailyForecast.setVisibility(View.INVISIBLE);
+
+    }
+
+    @Override
+    public void onExecuteFaliure(Exception e) {
+
+    }
 }
