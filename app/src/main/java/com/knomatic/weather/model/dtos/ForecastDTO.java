@@ -1,12 +1,13 @@
 package com.knomatic.weather.model.dtos;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
  * Created by oscargallon on 5/22/16.
  */
-public class ForecastDTO implements Serializable {
+public class ForecastDTO implements Serializable, Comparator<ForecastDTO> {
 
 
     private final Date time;
@@ -35,6 +36,7 @@ public class ForecastDTO implements Serializable {
     private final double cloudCover;
     private final double pressure;
     private final double ozone;
+    private final double temperature;
 
     private ForecastDTO(Date time, String summary, String icon, Date sunriseTime,
                         Date sunsetTime, double moonPhase, double precipIntensity,
@@ -44,7 +46,7 @@ public class ForecastDTO implements Serializable {
                         double apparentTemperatureMin, Date apparentTemperatureMinTime,
                         double apparentTemperatureMax, Date apparentTemperatureMaxTime,
                         double dewPoint, double humidity, double windSpeed, double windBearing,
-                        double cloudCover, double pressure, double ozone) {
+                        double cloudCover, double pressure, double ozone, double temperature) {
         this.time = time;
         this.summary = summary;
         this.icon = icon;
@@ -71,8 +73,169 @@ public class ForecastDTO implements Serializable {
         this.cloudCover = cloudCover;
         this.pressure = pressure;
         this.ozone = ozone;
+        this.temperature = temperature;
     }
 
+    @Override
+    public int compare(ForecastDTO lhs, ForecastDTO rhs) {
+        if (!lhs.getTime().equals(rhs.getTime())) {
+            return lhs.getTime().compareTo(rhs.getTime());
+        }
+
+        if (lhs.getTemperatureMin() != rhs.getTemperatureMin()) {
+            return lhs.getTemperatureMin() > rhs.getTemperatureMin() ? 1 : -1;
+        }
+
+        if (lhs.getApparentTemperatureMax() != rhs.getApparentTemperatureMax()) {
+            return lhs.getApparentTemperatureMax() > rhs.getApparentTemperatureMax() ? 1 : -1;
+        }
+
+        if (!lhs.getSummary().equals(rhs.getSummary())) {
+            return lhs.getSummary().compareTo(rhs.getSummary());
+        }
+
+        if (!lhs.getIcon().equals(rhs.getIcon())) {
+            return lhs.getIcon().compareTo(rhs.getIcon());
+        }
+
+        if (!lhs.getSunriseTime().equals(rhs.getSunriseTime())) {
+            return lhs.getSunriseTime().compareTo(rhs.getSunriseTime());
+        }
+
+        if (!lhs.getSunsetTime().equals(rhs.getSunsetTime())) {
+            return lhs.getSunsetTime().compareTo(rhs.getSunsetTime());
+        }
+
+        if (lhs.getPrecipProbability() != rhs.getPrecipProbability()) {
+            return lhs.getPrecipProbability() > rhs.getPrecipProbability() ? 1 : -1;
+        }
+
+        if (lhs.getHumidity() != rhs.getHumidity()) {
+            return lhs.getHumidity() > rhs.getHumidity() ? 1 : -1;
+        }
+
+        if (lhs.getWindSpeed() != rhs.getWindSpeed()) {
+            return lhs.getWindSpeed() > rhs.getWindSpeed() ? 1 : -1;
+        }
+
+        if (lhs.getCloudCover() != rhs.getCloudCover()) {
+            return lhs.getCloudCover() > rhs.getCloudCover() ? 1 : -1;
+        }
+
+        if (!lhs.getPrecipType().equals(rhs.getPrecipType())) {
+            return lhs.getPrecipType().compareTo(rhs.getPrecipType());
+        }
+
+        return 0;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public Date getSunriseTime() {
+        return sunriseTime;
+    }
+
+    public Date getSunsetTime() {
+        return sunsetTime;
+    }
+
+    public double getMoonPhase() {
+        return moonPhase;
+    }
+
+    public double getPrecipIntensity() {
+        return precipIntensity;
+    }
+
+    public double getPrecipIntensityMax() {
+        return precipIntensityMax;
+    }
+
+    public Date getPrecipIntensityMaxTime() {
+        return precipIntensityMaxTime;
+    }
+
+    public double getPrecipProbability() {
+        return precipProbability;
+    }
+
+    public String getPrecipType() {
+        return precipType;
+    }
+
+    public double getTemperatureMin() {
+        return temperatureMin;
+    }
+
+    public Date getTemperatureMinTime() {
+        return temperatureMinTime;
+    }
+
+    public double getTemperatureMax() {
+        return temperatureMax;
+    }
+
+    public Date getTemperatureMaxTime() {
+        return temperatureMaxTime;
+    }
+
+    public double getApparentTemperatureMin() {
+        return apparentTemperatureMin;
+    }
+
+    public Date getApparentTemperatureMinTime() {
+        return apparentTemperatureMinTime;
+    }
+
+    public double getApparentTemperatureMax() {
+        return apparentTemperatureMax;
+    }
+
+    public Date getApparentTemperatureMaxTime() {
+        return apparentTemperatureMaxTime;
+    }
+
+    public double getDewPoint() {
+        return dewPoint;
+    }
+
+    public double getHumidity() {
+        return humidity;
+    }
+
+    public double getWindSpeed() {
+        return windSpeed;
+    }
+
+    public double getWindBearing() {
+        return windBearing;
+    }
+
+    public double getCloudCover() {
+        return cloudCover;
+    }
+
+    public double getPressure() {
+        return pressure;
+    }
+
+    public double getOzone() {
+        return ozone;
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
 
     public static class ForecastDTOBuilder {
         private Date time;
@@ -101,6 +264,7 @@ public class ForecastDTO implements Serializable {
         private double cloudCover;
         private double pressure;
         private double ozone;
+        private double temperature;
 
         public ForecastDTOBuilder withATime(Date time) {
             this.time = time;
@@ -233,12 +397,17 @@ public class ForecastDTO implements Serializable {
             return this;
         }
 
+        public ForecastDTOBuilder withAnTemperature(double temperature) {
+            this.temperature = temperature;
+            return this;
+        }
+
         public ForecastDTO createForecastDTO() {
             return new ForecastDTO(time, summary, icon, sunriseTime, sunsetTime, moonPhase, precipIntensity,
                     precipIntensityMax, precipIntensityMaxTime, precipProbability, precipType, temperatureMin,
                     temperatureMinTime, temperatureMax, temperatureMaxTime, apparentTemperatureMin,
                     apparentTemperatureMinTime, apparentTemperatureMax, apparentTemperatureMaxTime,
-                    dewPoint, humidity, windSpeed, windBearing, cloudCover, pressure, ozone);
+                    dewPoint, humidity, windSpeed, windBearing, cloudCover, pressure, ozone, temperature);
         }
 
     }

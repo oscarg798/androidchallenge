@@ -1,4 +1,73 @@
 <resources>
-    <string name="app_name">Weather</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name" translatable="false">Weather</string>
+    <string name="action_settings" translatable="false">Settings</string>
+
+    <!--Keys-->
+    <string name="forecast_key">forecast</string>
+    <string name="app_title_key">app_title</string>
+    <string name="currently_key" translatable="false">currently</string>
+    <string name="daily_key" translatable="false">daily</string>
+    <string name="hourly_key" translatable="false">hourly</string>
+    <string name="data_key" translatable="false">data</string>
+    <string name="latitude_key" translatable="false">latitude</string>
+    <string name="longitude_key" translatable="false">longitude</string>
+    <string name="off_set_key" translatable="false">offset</string>
+    <string name="icon_key" translatable="false">icon</string>
+    <string name="time_key" translatable="false">time</string>
+    <string name="summary_key" translatable="false">summary</string>
+    <string name="sunriseTime_key" translatable="false">sunriseTime</string>
+    <string name="sunsetTime_key" translatable="false">sunsetTime</string>
+    <string name="moonPhase_key" translatable="false">moonPhase</string>
+    <string name="precipIntensity_key" translatable="false">precipIntensity</string>
+    <string name="precipIntensityMax_key" translatable="false">precipIntensityMax</string>
+    <string name="precipIntensityMaxTime_key" translatable="false">precipIntensityMaxTime</string>
+    <string name="precipProbability_key" translatable="false">precipProbability</string>
+    <string name="precipType_key" translatable="false">precipType</string>
+    <string name="temperatureMin_key" translatable="false">temperatureMin</string>
+    <string name="temperatureMinTime_key" translatable="false">temperatureMinTime</string>
+    <string name="temperatureMax_key" translatable="false">temperatureMax</string>
+    <string name="temperatureMaxTime_key" translatable="false">temperatureMaxTime</string>
+    <string name="apparentTemperatureMin_key" translatable="false">apparentTemperatureMin</string>
+    <string name="apparentTemperatureMinTime_key" translatable="false">apparentTemperatureMinTime</string>
+    <string name="apparentTemperatureMax_key" translatable="false">apparentTemperatureMax</string>
+    <string name="apparentTemperatureMaxTime_key" translatable="false">apparentTemperatureMaxTime</string>
+    <string name="dewPoint_key" translatable="false">dewPoint</string>
+    <string name="humidity_key" translatable="false">humidity</string>
+    <string name="windSpeed_key" translatable="false">windSpeed</string>
+    <string name="windBearing_key" translatable="false">windBearing</string>
+    <string name="visibility_key" translatable="false">visibility</string>
+    <string name="cloudCover_key" translatable="false">cloudCover</string>
+    <string name="pressure" translatable="false">pressure</string>
+    <string name="ozone_key" translatable="false">ozone</string>
+    <string name="time_zone_key" translatable="false">timezone</string>
+    <string name="temperature_key" translatable="false">temperature</string>
+    <string name="hourly_summary_key">hourly_summary</string>
+    <string name="daily_summary_key">daily_summary</string>
+
+    <string name="api_key" translatable="false">8cf9a2fee3384ab0c274babaa556f674</string>
+    <!--Keys END-->
+
+
+    <!--Error Messages-->
+    <string name="error_title">Error</string>
+    <string name="network_provider_disable">No Red</string>
+    <string name="gps_provider_disable">NO GPs</string>
+    <string name="can_not_get_location">no se puede obtener ubicación</string>
+    <string name="location_manager_unavaliable">Sin provedor</string>
+    <string name="can_not_get_forecast_from_location_error">Can get forecast from location, general error</string>
+    <string name="should_have_location">Debes tener ubicacion</string>
+    <!--Error Messages END-->
+
+
+    <!--Labels-->
+    <string name="ok_button_label">Acept</string>
+    <string name="cancel_label">Cancel</string>
+    <!--Labels END-->
+    <!--URL-->
+    <string name="base_url" translatable="false">https://api.forecast.io/forecast/</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--URL END-->
+
 </resources>
