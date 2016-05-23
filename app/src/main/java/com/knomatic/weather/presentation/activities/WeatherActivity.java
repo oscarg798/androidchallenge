@@ -1,6 +1,7 @@
 package com.knomatic.weather.presentation.activities;
 
 
+import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -29,6 +31,7 @@ import com.knomatic.weather.presentation.fragments.SplashFragment;
 import com.knomatic.weather.presentation.fragments.WeatherActivityFragment;
 import com.rm.androidesentials.model.utils.CoupleParams;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class WeatherActivity extends AppCompatActivity implements
@@ -44,6 +47,10 @@ public class WeatherActivity extends AppCompatActivity implements
 
     private Fragment currentFragment;
 
+    private LocationRequest locationRequest;
+
+    private final int REQUES_CHECK_LOCATION_SETTINGS = 201252;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,19 +64,27 @@ public class WeatherActivity extends AppCompatActivity implements
         weatherActivityController = new WeatherActivityController(this);
         currentFragment = SplashFragment.newInstance();
         changeFragment(currentFragment);
+        sendUpdateToFragment(getApplicationContext().getString(R.string.getting_location_message));
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
         googleApiClient.connect();
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(60 * 1000 * 2);
-        locationRequest.setFastestInterval(5 * 1000);
+        showRequestLocationMessage();
+
+    }
+
+
+    private void showRequestLocationMessage() {
+        if (locationRequest == null) {
+            locationRequest = LocationRequest.create();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationRequest.setInterval(30 * 1000 * 1);
+            locationRequest.setFastestInterval(5 * 1000);
+        }
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
-
 
         builder.setAlwaysShow(true);
 
@@ -83,26 +98,48 @@ public class WeatherActivity extends AppCompatActivity implements
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
                         /**
-                         * User allow to request for location
+                         * User has the gps enable
                          */
                         weatherActivityController.getUserLocation();
-
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
 
                         try {
-
                             status.startResolutionForResult(
-                                    WeatherActivity.this, 1000);
+                                    WeatherActivity.this, REQUES_CHECK_LOCATION_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
                         }
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
 
                         break;
+                    case LocationSettingsStatusCodes.CANCELED:
+                        /**
+                         * User cancel the request
+                         */
+                        Log.i("CANCELED", "USER CANCEL");
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUES_CHECK_LOCATION_SETTINGS: {
+                if (resultCode == RESULT_OK) {
+                    weatherActivityController.getUserLocation();
+                } else {
+                    /**
+                     * The user cancel the dialog which request for locations settings
+                     */
+                    showRequestLocationMessage();
+                }
+                break;
+            }
+
+        }
     }
 
     public void forecastGot(List<CoupleParams> coupleParamsList) {
@@ -149,7 +186,6 @@ public class WeatherActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
     @Override
@@ -165,6 +201,12 @@ public class WeatherActivity extends AppCompatActivity implements
                 .addToBackStack(null)
                 .commit();
 
+    }
+
+    public void sendUpdateToFragment(Serializable serializable) {
+        if (currentFragment != null && currentFragment instanceof SplashFragment) {
+            ((SplashFragment) currentFragment).receiveUpdated(serializable);
+        }
     }
 
     public WeatherActivityController getWeatherActivityController() {

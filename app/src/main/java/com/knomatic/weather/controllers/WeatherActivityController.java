@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.knomatic.weather.R;
 import com.knomatic.weather.model.Callbacks;
@@ -33,6 +34,7 @@ public class WeatherActivityController extends AbstractController implements
 
     private List<CoupleParams> coupleParamsList;
 
+
     /**
      * Contructor de la clase
      *
@@ -55,12 +57,17 @@ public class WeatherActivityController extends AbstractController implements
     @Override
     public void locationGot(Location location) {
         this.location = location;
+        Log.i("LOC", "oBTUVE UBICACION");
+        ((WeatherActivity) getActivity()).sendUpdateToFragment(getActivity()
+                .getApplicationContext().getString(R.string.getting_forecast_message));
+
         Forecast.getInstance()
                 .getForecastFromLocation(this, location, getActivity().getApplicationContext());
     }
 
     @Override
     public void errorGettingLocation(ErrorCodes error) {
+        Log.i("LOC", "ERROR " + error.toString());
         switch (error) {
             case CAN_NOT_GET_USER_LOCATION:
                 showAlertDialog(getActivity().getApplicationContext()
@@ -95,7 +102,17 @@ public class WeatherActivityController extends AbstractController implements
 
     @Override
     public void locationUpdateGot(Location location) {
+        /**
+         * It's means that the provider requested does not
+         * happen a previous location saved
+         */
+        if (this.location == null) {
+            locationGot(location);
+            ((WeatherActivity) getActivity()).sendUpdateToFragment(getActivity()
+                    .getApplicationContext().getString(R.string.getting_forecast_message));
+        }
         this.location = location;
+
     }
 
     @Override

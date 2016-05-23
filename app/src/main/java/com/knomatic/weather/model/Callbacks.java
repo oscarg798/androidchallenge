@@ -2,6 +2,7 @@ package com.knomatic.weather.model;
 
 import com.rm.androidesentials.model.utils.CoupleParams;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -21,5 +22,9 @@ public class Callbacks {
         void onForecastGot(List<CoupleParams> coupleParamsList);
 
         void onGetForecastError(Exception error);
+    }
+
+    public interface IFragmentUpdate{
+        void receiveUpdated(Serializable serializable);
     }
 }

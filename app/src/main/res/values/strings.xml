@@ -52,12 +52,14 @@
     <string name="error_title">Error</string>
     <string name="network_provider_disable">No Red</string>
     <string name="gps_provider_disable">NO GPs</string>
-    <string name="can_not_get_location">no se puede obtener ubicación</string>
+    <string name="can_not_get_location">We were unable to get you location. Please review your setting and restart the app</string>
     <string name="location_manager_unavaliable">Sin provedor</string>
     <string name="can_not_get_forecast_from_location_error">Can get forecast from location, general error</string>
     <string name="should_have_location">Debes tener ubicacion</string>
     <!--Error Messages END-->
 
+    <string name="getting_location_message">We are trying to get your locations</string>
+    <string name="getting_forecast_message">We are trying to get the forecast</string>
 
     <!--Labels-->
     <string name="ok_button_label">Acept</string>
