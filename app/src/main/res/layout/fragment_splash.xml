@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:id="@+id/splash_fragment_main_layout"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     android:weightSum="2"
     tools:context="com.knomatic.weather.presentation.fragments.SplashFragment">
@@ -12,14 +13,6 @@
         android:layout_height="0dp"
         android:layout_weight="1.7">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/ic_icon" />
-
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"
@@ -27,6 +20,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
             android:indeterminate="true" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
     </FrameLayout>
 
 

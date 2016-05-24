@@ -6,6 +6,7 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 import com.knomatic.weather.model.Forecast;
 import com.knomatic.weather.model.dtos.ForecastDTO;
+import com.knomatic.weather.model.utils.ForecastUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,4 +83,6 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         }
 
     }
+
+
 }

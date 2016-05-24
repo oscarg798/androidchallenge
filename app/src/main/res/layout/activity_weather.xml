@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+
     android:fitsSystemWindows="true"
+    android:id="@+id/main_layout"
     tools:context=".presentation.activities.WeatherActivity">
 
     <android.support.design.widget.AppBarLayout

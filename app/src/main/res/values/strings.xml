@@ -43,6 +43,8 @@
     <string name="temperature_key" translatable="false">temperature</string>
     <string name="hourly_summary_key">hourly_summary</string>
     <string name="daily_summary_key">daily_summary</string>
+    <string name="response_key">response</string>
+    <string name="provider_key">provider</string>
 
     <string name="api_key" translatable="false">8cf9a2fee3384ab0c274babaa556f674</string>
     <!--Keys END-->
@@ -50,16 +52,27 @@
 
     <!--Error Messages-->
     <string name="error_title">Error</string>
-    <string name="network_provider_disable">No Red</string>
-    <string name="gps_provider_disable">NO GPs</string>
-    <string name="can_not_get_location">We were unable to get you location. Please review your setting and restart the app</string>
-    <string name="location_manager_unavaliable">Sin provedor</string>
-    <string name="can_not_get_forecast_from_location_error">Can get forecast from location, general error</string>
-    <string name="should_have_location">Debes tener ubicacion</string>
+    <string name="network_provider_disable">Your network provider is disable</string>
+    <string name="try_or_dissmiss_location_message"> if you want to try again please
+    press Accept otherwise press Cancel</string>
+    <string name="gps_provider_disable">Your GRP provider is disable</string>
+    <string name="can_not_get_location">We were unable to get you location.</string>
+    <string name="location_manager_unavaliable">Sorry for use this app you need a location provider.</string>
+    <string name="can_not_get_forecast_from_location_error">Can get forecast from location, if
+    you want to try again please press accept or cancel to exit</string>
+    <string name="should_have_location">You should have a location</string>
+    <string name="we_need_your_location_message_without_google_api_client">We need your location
+    for show you the weather updates. So we will need that you enable your location provider and when you do it,
+    press accept, or press cancel to exit</string>
+    <string name="no_internet_connection_message">We need internet connection to get the forecast,
+    so check your internet connection and press accept, otherwise press cancel to exit</string>
+    <string name="need_location_message">we need your location, so we would need that you press yes in the
+    next dialog, if you want to enable your location press accept otherwise cancel to exit</string>
     <!--Error Messages END-->
 
     <string name="getting_location_message">We are trying to get your locations</string>
     <string name="getting_forecast_message">We are trying to get the forecast</string>
+    <string name="do_you_to_exi_message">Do you want to close application?</string>
 
     <!--Labels-->
     <string name="ok_button_label">Acept</string>

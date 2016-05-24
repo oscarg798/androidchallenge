@@ -43,9 +43,36 @@ Your time is valuable and we understand that.  Our goal is for you to spend abou
 Please answer the following in about a paragraph.
 
 1.  How long did you spend on completing this challenge?
+	I spend 14 hours
+
 2.  How far were you at 3 hours?
+	In three hours I had the forecast information consumed it, and the user location. But at that point I did not have any UI created, because I wanted  data layer ready as the first task
+
 3.  What needs to be finished/fixed for this to be use in a production app?
+	So many things, first I will have to translate all the strings for support multiple languages. I'm using many pop ups to avoid the app crash (Show message to user, to let him decide what to do) and I think I can improve this and show less dialogues. when the app go to the foreground I'm saving current the state, but only if the user was watching the forecast, so I thing it will need an improvement to save the user location too and avoid request it multiples times. 
+
+	The app will need to show to the user the forecast per hour, because I have the data but I did not show it.
+
+	the app will need a service to request forecast updates based on last known location, so the user get the right information every time, and  will be nice send this notifications to a wear device using appcompat notification builder. 
+
+	Improve UX adding sound and more cool animations.
+
+	Let the user specify multiples locations in which he wants to receive updates.
+
+	Save into any kind of persistent storage the last forecast update, and create an update method to let the user watch the forecast without waiting, and when we receive updates refresh the UI or show a notifications if the user has close the application
+
+	Test..Test and still testing 
+
 4.  What did you think of this challenge?
+	It's a nice challenge, it evaluates many aspects 
+
 5.  What part was unclear?
+	The API documentation. I think is better analyze the json response. And the API documentation needs to add a glossary right now, because developers are not Environmental engineers
+
 6.  What could we do to make this challenge better?
+	Have another API, and compare the forecast and decide which one show to the user. 
+
+	Let the user search a location by name in which he wants to watch the weather
+
 7.  What did we forget to test you on?
+	SQLite, google maps 

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="android_esentials-1.0.7">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.rm.androidesentials/android_esentials/1.0.7/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.rm.androidesentials/android_esentials/1.0.7/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.rm.androidesentials/android_esentials/1.0.7/3119ff9c17c58ea6a51d1e5753c7f23dd54a0cda/android_esentials-1.0.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

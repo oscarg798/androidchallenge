@@ -41,11 +41,13 @@ public class ForecastUtils {
 
     private static Calendar calendar = Calendar.getInstance();
 
-    public static Double passTemperatureToCelciusDegress(double tempature) {
-        return tempature - 32;
+    public static double passTemperatureToCelciusDegress(double tempature) {
+        tempature = tempature - 32;
+        tempature *= 0.555;
+        return tempature;
     }
 
-    public static Double passWindSpeedToKM(double windSpeed) {
+    public static double passWindSpeedToKM(double windSpeed) {
         return windSpeed * KM_IN_ONE_MILE;
     }
 
