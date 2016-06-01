@@ -1,15 +1,19 @@
 package com.knomatic.weather.presentation.fragments;
 
+import android.content.DialogInterface;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.knomatic.weather.R;
@@ -29,7 +33,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class WeatherActivityFragment extends Fragment implements IAsyncTaskExecutor {
+public class WeatherActivityFragment extends Fragment implements IAsyncTaskExecutor{
 
     private static final String PARAM_KEY = "forecast";
 
@@ -51,6 +55,15 @@ public class WeatherActivityFragment extends Fragment implements IAsyncTaskExecu
 
     private ProgressBar pbDailyForecast;
 
+    private RelativeLayout weatherFragmentMainLayout;
+
+    /**
+     * Use this method for get this fragment, because we need to pass
+     * the list of the forecast that we will show.
+     *
+     * @param coupleParamsList list with forecats information
+     * @return return a  weatherActivityFragment instance
+     */
     public static WeatherActivityFragment getInstance(List<CoupleParams> coupleParamsList) {
         WeatherActivityFragment weatherActivityFragment = new WeatherActivityFragment();
         Bundle bundle = new Bundle();
@@ -60,6 +73,9 @@ public class WeatherActivityFragment extends Fragment implements IAsyncTaskExecu
 
     }
 
+    /**
+     * Fragment must have a public empty constructor
+     */
     public WeatherActivityFragment() {
 
     }
@@ -82,7 +98,13 @@ public class WeatherActivityFragment extends Fragment implements IAsyncTaskExecu
         return view;
     }
 
+    /**
+     * this method load the layout view components
+     *
+     * @param view layout inflated
+     */
     private void initViewComponents(View view) {
+        weatherFragmentMainLayout = (RelativeLayout) view.findViewById(R.id.weather_fragment_main_layout);
         tvCityName = (TextView) view.findViewById(R.id.tv_city_name);
         tvCurrentTemperature = (TextView) view.findViewById(R.id.tv_current_temperature);
         tvCurrentWeather = (TextView) view.findViewById(R.id.tv_current_weather);
@@ -90,6 +112,8 @@ public class WeatherActivityFragment extends Fragment implements IAsyncTaskExecu
         ivWeather = (ImageView) view.findViewById(R.id.iv_weather);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         pbDailyForecast = (ProgressBar) view.findViewById(R.id.pb_daily_forecast);
+
+
     }
 
     private void initComponents() {
@@ -102,6 +126,9 @@ public class WeatherActivityFragment extends Fragment implements IAsyncTaskExecu
         tvWindSpeed.setText(String.format("%.2f KM", ForecastUtils
                 .passWindSpeedToKM(forecastDTO.getWindSpeed())));
 
+        /**
+         * We need to find de drawable constant for the right icon
+         */
         int weatherIcon = ForecastUtils.getWeatherIcon(forecastDTO.getIcon());
 
         ivWeather.setImageDrawable(getActivity()
@@ -157,6 +184,9 @@ public class WeatherActivityFragment extends Fragment implements IAsyncTaskExecu
             tvCityName.setText(cityName);
         }
 
+        /**
+         * We put the adapter
+         */
         recyclerView.setAdapter(dailyForecastAdapter);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()
                 .getApplicationContext()));
@@ -167,8 +197,20 @@ public class WeatherActivityFragment extends Fragment implements IAsyncTaskExecu
 
     }
 
+    /**
+     * In this fragment we are using the {@link AsyncTaskExecutor}
+     * for load the data that might take a while, so we do not
+     * care fot the failure status of those operations
+     *
+     * @param e
+     */
     @Override
     public void onExecuteFaliure(Exception e) {
 
     }
+
+
+
+
+
 }

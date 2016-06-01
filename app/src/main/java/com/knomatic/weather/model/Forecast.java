@@ -34,6 +34,8 @@ public class Forecast implements IForecast {
 
     private final String COMMA = ",";
 
+    private final String GET = "GET";
+
     public static Forecast getInstance() {
         return ourInstance;
     }
@@ -173,7 +175,7 @@ public class Forecast implements IForecast {
         return hourlyForecast;
     }
 
-    private void getForecastFromLocationSuccess(final String response, final Context context) {
+    public void getForecastFromLocationSuccess(final String response, final Context context) {
         final AsyncTaskExecutor asyncTaskExecutor = new AsyncTaskExecutor(new IAsyncTaskExecutor() {
             @Override
             public Object execute() {
@@ -206,21 +208,46 @@ public class Forecast implements IForecast {
 
                     ForecastDTO forecastDTO = getForecastFromJsonObject(currentlyForecastJsonObject, context,
                             context.getString(R.string.currently_key));
-
+                    /**
+                     * We will create a list of objects that contains all the forecast information
+                     *  element at 0 index has the hourly forecast information
+                     *  element at 1 index has the daily forecast information
+                     *  element at 2 index has the currently forecast information
+                     *  element at 3 index has the daily forecast summary
+                     *  element at 4 index has the hourly forecast summary
+                     *  element at 5 index has the timezone of the request
+                     *  element at 6 index has the request information returned by the API
+                     */
                     List<CoupleParams> coupleParamsList = new ArrayList<>();
                     coupleParamsList.add(new CoupleParams.CoupleParamBuilder(context.getString(R.string.hourly_key))
-                            .nestedObject((Serializable) hourlyForecastList).createCoupleParam());
+                            .nestedObject((Serializable) hourlyForecastList)
+                            .createCoupleParam());
+
                     coupleParamsList.add(new CoupleParams.CoupleParamBuilder(context.getString(R.string.daily_key))
-                            .nestedObject((Serializable) dailyForecastList).createCoupleParam());
+                            .nestedObject((Serializable) dailyForecastList)
+                            .createCoupleParam());
+
                     coupleParamsList.add(new CoupleParams.CoupleParamBuilder(context.getString(R.string.currently_key))
-                            .nestedObject(forecastDTO).createCoupleParam());
+                            .nestedObject(forecastDTO)
+                            .createCoupleParam());
+
                     coupleParamsList.add(new CoupleParams.CoupleParamBuilder(context.getString(R.string.daily_summary_key))
-                            .nestedParam(dailySummary).createCoupleParam());
+                            .nestedParam(dailySummary)
+                            .createCoupleParam());
+
                     coupleParamsList.add(new CoupleParams.CoupleParamBuilder(context.getString(R.string.hourly_key))
-                            .nestedParam(hourlySummary).createCoupleParam());
+                            .nestedParam(hourlySummary)
+                            .createCoupleParam());
+
                     coupleParamsList.add(new CoupleParams.CoupleParamBuilder(context
                             .getString(R.string.time_zone_key))
-                            .nestedParam(timeZone).createCoupleParam());
+                            .nestedParam(timeZone)
+                            .createCoupleParam());
+
+                    coupleParamsList.add(new CoupleParams.CoupleParamBuilder(context
+                            .getString(R.string.response_key))
+                            .nestedParam(response)
+                            .createCoupleParam());
 
 
                     return coupleParamsList;
@@ -286,13 +313,17 @@ public class Forecast implements IForecast {
             public void errorResponse(String message, JSONObject jsonObject) {
                 getForecastFromLocationFail(message);
             }
-        }, null, "GET", true);
+        }, null, GET, true);
 
         httpServices.execute(context.getString(R.string.base_url) + context.getString(R.string.api_key)
                 + SLASH + location.getLatitude() + COMMA + location.getLongitude());
-
-
     }
 
+    public Callbacks.IGetForecastFromLocationCallbacks getiGetForecastFromLocationCallbacks() {
+        return iGetForecastFromLocationCallbacks;
+    }
 
+    public void setiGetForecastFromLocationCallbacks(Callbacks.IGetForecastFromLocationCallbacks iGetForecastFromLocationCallbacks) {
+        this.iGetForecastFromLocationCallbacks = iGetForecastFromLocationCallbacks;
+    }
 }
